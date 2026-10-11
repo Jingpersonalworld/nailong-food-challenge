@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' file:; style-src 'self' file:; img-src 'self' file: data:; media-src 'self' file: blob:; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>奶龙开饭啦！ · 45 秒美食大挑战</title>
+  <link rel="icon" href="assets/milk.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="core.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div><div class="eyebrow"><span class="tiny-star">✦</span> 欢迎来到零食乐园 <span class="offline">离线畅玩</span></div><h1>奶龙<span>开饭啦！</span></h1><p>45 秒美食大挑战 <span class="separator"> / </span> 美味，是最快乐的超能力。</p></div>
+      <div class="tools"><button id="sound" class="icon-button" aria-pressed="true" title="音效开关">♫ 音效开</button><button id="pause" class="icon-button" disabled>Ⅱ 暂停</button><button id="retry" class="icon-button" disabled>↻ 重试</button></div>
+    </header>
+    <section class="hud" aria-label="挑战状态">
+      <div class="metric timer" id="timer-panel"><span class="metric-icon">◷</span><div><span class="label">剩余时间</span><strong><span id="time">45</span><small> 秒</small></strong></div><span id="timer-note" class="metric-note">慢慢瞄准，抓住美味</span></div>
+      <div class="metric score"><span class="metric-icon">♡</span><div><span class="label">当前美味值</span><strong id="score">0</strong></div><div class="goal"><span>目标 <b>120</b></span><div class="progress-track"><progress id="progress" value="0" max="120" aria-label="美味值目标进度"></progress></div></div></div>
+    </section>
+    <section class="stage" id="stage" aria-label="零食乐园游戏区域">
+      <canvas id="game" width="1000" height="760" tabindex="0" role="img" aria-label="奶龙左右瞄准，点击此区域或按空格伸舌抓取食物"></canvas>
+      <div class="stage-corner"><span class="dot"></span><span id="stage-status">美食已经准备好了</span></div>
+      <div id="home" class="overlay home">
+        <div class="home-hero"><div class="hero-halo"></div><span class="hero-star star-a">✦</span><span class="hero-star star-b">✧</span><img src="assets/nailong.png" alt="圆润可爱的奶龙" class="hero-character"><span class="speech">今天也要吃得开心！</span><div class="hero-shadow"></div></div>
+        <div class="home-copy"><div class="mini-tag">奶龙的美味任务</div><h2>肚子饿了，<br>快乐<span>开吃！</span></h2><p class="intro">瞄准喜欢的零食，伸出弹力舌头。<br>在 <b>45 秒</b>内吃到 <b>120 美味值</b>，<br>解锁奶娃的惊喜变身！</p><div class="how"><span class="key">空格</span><span>或点击游戏区 · 看准时机出舌</span></div><button id="start" class="primary" disabled>正在准备美食…</button><p class="trap-tip">小心绿色苦瓜：−10 分，舌头打结 1 秒</p></div>
+      </div>
+      <div id="paused" class="overlay compact" hidden><div class="modal"><span class="modal-icon">Ⅱ</span><h2>美味稍等一下</h2><p id="pause-reason">时间和动作已暂停，准备好再继续。</p><button id="resume" class="primary">继续开吃 <span>→</span></button><button id="restart-paused" class="text-button">重新挑战</button></div></div>
+      <div id="result" class="overlay result" hidden>
+        <div class="result-visual"><div class="celebrate-halo"></div><div class="celebrate-stars">✦ <span>✧</span> ✦</div><img id="transform-dragon" src="assets/nailong.png" alt="奶龙"><img id="transform-naiwa" src="assets/naiwa.png" alt="变身后的奶娃正面"><img id="transform-laugh" src="assets/laugh.png" alt="奶娃捧腹大笑"></div>
+        <div class="result-copy"><div class="mini-tag" id="result-tag">挑战成功</div><h2 id="result-title">奶娃，开怀大笑！</h2><p id="result-description">美味超能力觉醒，快乐加倍！</p><div class="result-score"><span id="final-score">120</span><small> 美味值</small></div><p id="final-note"></p><button id="again" class="primary">再玩一次 <span>↻</span></button><button id="back-home" class="text-button">回到首页</button></div>
+      </div>
+      <div id="asset-error" class="overlay compact" hidden><div class="modal"><h2>美食素材没找到</h2><p>请先完整解压文件包，保留 assets 文件夹，再打开“开始游戏.html”。</p><p id="error-detail"></p></div></div>
+    </section>
+    <div class="below-stage"><span id="hint">✦ 看准方向，再伸舌头。美食回到嘴里才计分。</span><span class="key-hint"><kbd>空格</kbd> 出舌 <span>·</span> <kbd>Esc</kbd> 暂停</span></div>
+    <section class="food-guide" aria-label="美食分值"><div><img src="assets/milk.png" alt="奶茶"><span>奶茶<b>+10</b></span></div><div><img src="assets/chicken.png" alt="炸鸡腿"><span>炸鸡腿<b>+15</b></span></div><div><img src="assets/ice.png" alt="彩虹冰淇淋"><span>彩虹冰淇淋<b>+20</b></span></div><div><img src="assets/burger.png" alt="汉堡"><span>汉堡<b>+25</b></span></div><div class="bitter-guide"><img src="assets/bitter.png" alt="凹凸绿色苦瓜"><span>苦瓜<b>−10 · 打结 1 秒</b></span></div></section>
+    <footer>一小口美味，一大份快乐 <span>✧</span> 无需联网 · 无需安装</footer>
+    <p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+    <noscript><p class="noscript">请在浏览器中开启 JavaScript 后重新打开游戏。</p></noscript>
+  </main>
+</body>
+</html>
